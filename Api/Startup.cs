@@ -38,7 +38,8 @@ namespace Api
 
       services.AddDbContext<DataContext>(opt =>
       {
-        opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+          opt.UseLazyLoadingProxies();
+          opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
       });
 
       // We will have a lot of handlers but we need to tell mediator once
