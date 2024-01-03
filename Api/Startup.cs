@@ -31,9 +31,7 @@ namespace Api
 
     public IConfiguration Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
     
-    // Configure development to use Sqlite.
     public void ConfigureDevelopmentServices(IServiceCollection services){
       services.AddDbContext<DataContext>(opt =>
       {
@@ -47,7 +45,7 @@ namespace Api
       services.AddDbContext<DataContext>(opt =>
       {
           opt.UseLazyLoadingProxies();
-          opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
+          //opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
       });
 
          ConfigureServices(services);
@@ -72,7 +70,6 @@ namespace Api
         }
       );
 
-      // configure Identity
       var builder = services.AddIdentityCore<AppUser>();
       var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
       identitybuilder.AddEntityFrameworkStores<DataContext>();
@@ -96,20 +93,17 @@ namespace Api
 
         }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      //added custom middleware.
       app.UseMiddleware<ErrorHandlinMiddleware>();
       if (env.IsDevelopment())
       {
-         // app.UseDeveloperExceptionPage();
+        app.UseDeveloperExceptionPage();
       }
 
       app.UseHttpsRedirection();
 
       app.UseRouting();
-      // use routing
 
       app.UseAuthentication();
       app.UseAuthorization();
